@@ -1,7 +1,6 @@
 # tomli-testlab
 
 > 基于真实开源项目 [tomli](https://github.com/hukkin/tomli) 的测试练习项目。
-> 不是教你写解析器，是教你面向真实项目怎么设计测试。
 
 ## 被测对象
 
@@ -55,4 +54,4 @@ tomli-testlab/
 - **本仓库的测试代码**：原创，以 [MIT](LICENSE) 许可发布。
 - **测试对象 tomli**：版权归 [Taneli Hukkinen](https://github.com/hukkin) 所有，MIT 许可。
 
-使用 `tomli` 作为测试目标不代表与原作者有任何关联。这是一个独立的教学项目。
+使用 `tomli` 作为测试目标不代表与原作者有任何关联。这是一个独立的练习项目。
