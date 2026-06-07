@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tomli-testlab"
+version = "0.1.0"
+description = "针对 tomli (TOML 解析器) 的测试 — 6 种测试设计技术"
+requires-python = ">=3.11"
+dependencies = [
+    "tomli>=2.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7",
+    "pytest-cov>=4",
+    "hypothesis>=6",
+    "pytest-html>=4",
+]
