@@ -1,7 +1,4 @@
-"""Shared pytest fixtures for tomli testing.
-
-Fixture 是测试环境预置条件，避免每个测试函数重复样板代码。
-"""
+"""Shared pytest fixtures for tomli testing."""
 
 import tomli
 import pytest

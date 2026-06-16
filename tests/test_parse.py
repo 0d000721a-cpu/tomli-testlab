@@ -1,8 +1,4 @@
-"""核心解析测试 — 等价类划分 + 功能验证。
-
-TOML 的值类型包括：string, integer, float, boolean, datetime, array, table。
-每个类型就是一个等价类，选一个有代表性的值测一次就行。
-"""
+"""核心解析测试 — 等价类划分 + 功能验证。"""
 
 from datetime import date, datetime, time
 from decimal import Decimal

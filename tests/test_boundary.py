@@ -1,27 +1,27 @@
-"""边界值分析测试 — 数值/日期/字符串在边界处的行为。
+"""边界值分析测试 — 数值/日期/字符串边界。"""
 
-边界值公式：区间 [a, b] 测 a-1, a, a+1, b-1, b, b+1。
-对于 TOML 解析器，边界值存在于数字范围、日期范围、字符串长度等处。
-"""
-
+import math
 from datetime import date, datetime, time
-from sys import maxsize
 
 import pytest
+
+# TOML v1.0 整数范围: 64-bit signed
+TOML_MIN_INT = -(2**63)
+TOML_MAX_INT = 2**63 - 1
 
 
 class TestIntegerBoundaries:
     """整数边界值"""
 
     def test_int_min(self, loads):
-        """边界：最小整数"""
-        result = loads(f"n = {-maxsize - 1}")
-        assert result["n"] == -maxsize - 1
+        """边界：TOML 64-bit 最小值"""
+        result = loads(f"n = {TOML_MIN_INT}")
+        assert result["n"] == TOML_MIN_INT
 
     def test_int_max(self, loads):
-        """边界：最大整数"""
-        result = loads(f"n = {maxsize}")
-        assert result["n"] == maxsize
+        """边界：TOML 64-bit 最大值"""
+        result = loads(f"n = {TOML_MAX_INT}")
+        assert result["n"] == TOML_MAX_INT
 
     def test_int_zero(self, loads):
         """边界值：0"""
@@ -53,12 +53,14 @@ class TestFloatBoundaries:
 
     def test_float_negative_zero(self, loads):
         result = loads("n = -0.0")
-        assert result["n"] == 0.0  # -0.0 == 0.0 在 Python 中
+        assert result["n"] == 0.0
+        # 验证负零的符号被正确保留了
+        assert math.copysign(1, result["n"]) == -1
 
     def test_float_smallest_positive(self, loads):
         """边界：最小正浮点数"""
         result = loads("n = 5e-324")
-        assert result["n"] > 0
+        assert result["n"] == 5e-324
 
     def test_float_largest(self, loads):
         """边界：最大浮点数"""
@@ -128,10 +130,9 @@ class TestStringBoundaries:
         result = loads('x = "   "')
         assert result["x"] == "   "
 
-    def test_string_newline_in_basic(self, loads):
+    def test_string_newline_in_basic(self, loads, TOMLDecodeError):
         """边界：普通字符串不能包含换行符（应报错）"""
-        import tomli
-        with pytest.raises(tomli.TOMLDecodeError):
+        with pytest.raises(TOMLDecodeError):
             loads('x = "line1\nline2"')
 
 

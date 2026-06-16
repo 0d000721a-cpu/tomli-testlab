@@ -1,25 +1,9 @@
-# Python
-__pycache__/
-*.py[cod]
-*.egg-info/
-dist/
-build/
-
-# Virtual env
-.venv
-.env
-venv/
-
-# IDE
-.vscode/
-.idea/
-
-# Reports
-htmlcov/
-.coverage
-.coverage.*
+# 测试运行输出不传 git
 reports/
-
-# OS
-.DS_Store
-Thumbs.db
+.coverage
+__pycache__/
+.pytest_cache/
+*.egg-info/
+.venv/
+.hypothesis/
+study_plan.md

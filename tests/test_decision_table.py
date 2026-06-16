@@ -1,8 +1,4 @@
-"""决策表驱动的类型解析测试。
-
-决策表把"TOML 值输入 → Python 类型输出"的所有路径列出来。
-每个规则对应一种值的格式变体。
-"""
+"""决策表驱动的类型解析测试。"""
 
 from datetime import date, datetime, time
 from decimal import Decimal
@@ -34,29 +30,28 @@ import pytest
 
 
 DECISION_TABLE = [
-    # (TOML 源码, 预期的 Python 类型, 断言函数名)
-    pytest.param('x = "hello"',                                  str,      "是字符串",          id="R1-string"),
-    pytest.param("x = 42",                                       int,      "是整数",            id="R2-int"),
-    pytest.param("x = 3.14",                                     float,    "是浮点数",          id="R3-float"),
-    pytest.param("x = true",                                     bool,     "是布尔值",          id="R4-true"),
-    pytest.param("x = false",                                    bool,     "是布尔值",          id="R5-false"),
-    pytest.param("x = 2024-06-07T12:00:00Z",                     datetime, "是时间戳",          id="R6-offset-datetime"),
-    pytest.param("x = 2024-06-07T12:00:00",                      datetime, "是本地时间戳",      id="R7-local-datetime"),
-    pytest.param("x = 2024-06-07",                                date,     "是日期",            id="R8-local-date"),
-    pytest.param("x = 12:00:00",                                  time,     "是时间",            id="R9-local-time"),
-    pytest.param("x = [1, 2, 3]",                                 list,     "是列表",            id="R10-array"),
-    pytest.param('x = {a = 1}',                                   dict,     "是字典",            id="R11-inline-table"),
-    pytest.param("[x]\ny = 1",                                    dict,     "是表",              id="R12-table"),
-    pytest.param('x = """\nline1\n"""',                           str,      "是多行字符串",      id="R13-multiline"),
-    pytest.param(r"x = 'raw \n str'",                             str,      "是字面量字符串",    id="R14-literal-str"),
+    pytest.param('x = "hello"',               str,      id="R1-string"),
+    pytest.param("x = 42",                    int,      id="R2-int"),
+    pytest.param("x = 3.14",                  float,    id="R3-float"),
+    pytest.param("x = true",                  bool,     id="R4-true"),
+    pytest.param("x = false",                 bool,     id="R5-false"),
+    pytest.param("x = 2024-06-07T12:00:00Z",  datetime, id="R6-offset-datetime"),
+    pytest.param("x = 2024-06-07T12:00:00",   datetime, id="R7-local-datetime"),
+    pytest.param("x = 2024-06-07",             date,     id="R8-local-date"),
+    pytest.param("x = 12:00:00",               time,     id="R9-local-time"),
+    pytest.param("x = [1, 2, 3]",              list,     id="R10-array"),
+    pytest.param('x = {a = 1}',                dict,     id="R11-inline-table"),
+    pytest.param("[x]\ny = 1",                 dict,     id="R12-table"),
+    pytest.param('x = """\nline1\n"""',        str,      id="R13-multiline"),
+    pytest.param(r"x = 'raw \n str'",          str,      id="R14-literal-str"),
 ]
 
 
 class TestParseTypeByDecisionTable:
     """决策表: TOML 值 → Python 类型"""
 
-    @pytest.mark.parametrize("toml_source,expected_type,desc", DECISION_TABLE)
-    def test_type_mapping(self, loads, toml_source, expected_type, desc):
+    @pytest.mark.parametrize("toml_source,expected_type", DECISION_TABLE)
+    def test_type_mapping(self, loads, toml_source, expected_type):
         result = loads(toml_source)
 
         if "x" in result:
@@ -65,12 +60,12 @@ class TestParseTypeByDecisionTable:
             # 处理表的情况 ([x]\ny = 1 → {"x": {"y": 1}})
             value = result
 
-        if isinstance(value, dict):
-            # table 情况要取子键
-            value = value.get("x", value)
+        # table 情况要取子键
+        if isinstance(value, dict) and "x" in value:
+            value = value["x"]
 
         assert isinstance(value, expected_type), (
-            f"[{desc}] 期望类型 {expected_type.__name__}, 实际 {type(value).__name__}"
+            f"期望 {expected_type.__name__}，实际 {type(value).__name__}"
         )
 
     def test_float_as_decimal_with_parse_float(self, loads):

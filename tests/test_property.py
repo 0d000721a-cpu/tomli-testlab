@@ -2,20 +2,25 @@
 
 传统测试写有限个例子，属性测试描述不变量，
 让计算机生成无数随机输入来验证这些不变量是否被违反。
+
+踩坑记录：
+- 最开始用 st.text() 直接生成键名，结果带特殊符号的总是 TOMLDecodeError
+- 后来改用 st.integers().map() 生成安全的键名
+- 试过 st.sets() 来保证键不重复，但 hypothesis 的 sets 策略对复杂元素不好控制
+- 最终用 unique_by 参数直接过滤重复键
 """
 
 import pytest
 import tomli
-from hypothesis import given, strategies as st, settings, assume
+from hypothesis import given, strategies as st, settings
 
 
 # ── 策略定义 ──
 
-# 安全的裸键名（不含特殊字符，且自动保证唯一性）
-# 用 indexing (i0, i1, i2...) 避免重复键的问题
+# 安全的裸键名：用下标的整数索引，避免特殊字符问题
 index_key = st.integers(min_value=0, max_value=9999).map(lambda i: f"k{i}")
 
-# 安全的字符串值（不含换行、双引号）
+# 安全的字符串值（不含换行、双引号、反斜杠）
 safe_str = st.text(
     alphabet=st.characters(
         whitelist_categories=("Ll", "Lu", "Nd", "P", "Z"),
@@ -29,10 +34,12 @@ safe_str = st.text(
     and "\\" not in s
 )
 
-# 整数（TOML v1.0 用 64 位有符号）
+# 整数：TOML v1.0 规定 64 位有符号
+# 试过直接用 st.integers()，发现 hypothesis 会生成超大值导致溢出
+# 查了 TOML 规范后才加上范围限制
 toml_int = st.integers(min_value=-(2**63), max_value=2**63 - 1)
 
-# 浮点数（不要 inf/nan，因为 TOML 特殊值不适合常规策略）
+# 浮点数：排除 inf/nan，这些特殊值单独测就行
 toml_float = st.floats(
     min_value=-1e308,
     max_value=1e308,
