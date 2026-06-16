@@ -37,7 +37,7 @@ tomli-testlab/
 | `test_boundary.py` | 边界值，int/float/date/string 极值 |
 | `test_property.py` | hypothesis 属性基，随机生成用例验证不变量 |
 
-共 109 条用例，CI 三版本并行（3.11 / 3.12 / 3.13）。
+共 116 条用例，CI 三版本并行（3.11 / 3.12 / 3.13）。
 
 ## 版权
 
