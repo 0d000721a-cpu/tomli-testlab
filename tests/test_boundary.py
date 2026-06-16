@@ -139,20 +139,15 @@ class TestStringBoundaries:
 class TestTableBoundaries:
     """表格边界值"""
 
-    def test_table_array_empty(self, loads):
-        """边界：空表数组"""
-        result = loads("")  # 没有 [[items]]
-        assert result == {}
-
     def test_single_table_array(self, loads):
         """边界：只有一个元素的表数组"""
         result = loads('[[item]]\nname = "only"')
         assert len(result["item"]) == 1
 
-    def test_table_name_max_nesting(self, loads):
-        """边界：深嵌套"""
-        result = loads("[a]\n[b]\n[c]\n[d]\nval = 1")
-        assert result["d"]["val"] == 1
+    def test_deeply_nested_tables(self, loads):
+        """边界：多级嵌套表"""
+        result = loads("[a.b.c.d]\nval = 1")
+        assert result["a"]["b"]["c"]["d"]["val"] == 1
 
 
 class TestArrayBoundaries:

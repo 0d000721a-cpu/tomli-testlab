@@ -184,7 +184,7 @@ class TestTables:
     """表（字典）等价类"""
 
     def test_basic_table(self, loads):
-        result = loads("[owner]\nname = \"Tom\"")
+        result = loads('[owner]\nname = "Tom"')
         assert result == {"owner": {"name": "Tom"}}
 
     def test_nested_table(self, loads):
