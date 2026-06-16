@@ -93,6 +93,20 @@ class TestStructuralViolations:
             loads("""a = 1\n[a]\nb = 2""")
 
 
+class TestEncoding:
+    """等价类：编码问题"""
+
+    def test_unknown_escape(self, loads):
+        """字符串中的非法转义"""
+        with pytest.raises(tomli.TOMLDecodeError):
+            loads('x = "hello\zworld"')
+
+    def test_control_char_in_value(self, loads):
+        """值中包含控制字符（\x00）"""
+        with pytest.raises(tomli.TOMLDecodeError):
+            loads('x = "hello\x00world"')
+
+
 class TestEdgeInputs:
     """边界输入"""
 

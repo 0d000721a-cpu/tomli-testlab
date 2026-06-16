@@ -1,5 +1,6 @@
 """核心解析测试 — 等价类划分 + 功能验证。"""
 
+import math
 from datetime import date, datetime, time
 from decimal import Decimal
 
@@ -34,12 +35,23 @@ class TestStrings:
         result = loads('esc = "tab\\there\\nnewline"')
         assert result["esc"] == "tab\there\nnewline"
 
+    def test_literal_multiline_string(self, loads):
+        """字面量多行字符串（不转义）"""
+        toml = "x = '''\nline1\nline2'''"
+        result = loads(toml)
+        assert result["x"] == "line1\nline2"
+
 
 class TestIntegers:
     """整数等价类"""
 
     def test_positive_int(self, loads):
         result = loads("n = 42")
+        assert result == {"n": 42}
+
+    def test_positive_sign_int(self, loads):
+        """TOML 允许 + 前缀"""
+        result = loads("n = +42")
         assert result == {"n": 42}
 
     def test_negative_int(self, loads):
@@ -88,7 +100,15 @@ class TestFloats:
 
     def test_nan(self, loads):
         result = loads("n = nan")
-        assert str(result["n"]) == "nan"
+        assert math.isnan(result["n"])
+
+    def test_positive_infinity(self, loads):
+        result = loads("n = +inf")
+        assert result["n"] == float("inf")
+
+    def test_negative_infinity(self, loads):
+        result = loads("n = -inf")
+        assert result["n"] == float("-inf")
 
     def test_parse_float_custom(self, loads):
         """验证 parse_float 参数可以把 float 转成 Decimal"""
@@ -187,6 +207,18 @@ sku = 284758393"""
         result = loads(toml)
         assert len(result["products"]) == 2
         assert result["products"][0]["name"] == "Hammer"
+
+
+class TestFileParsing:
+    """文件解析"""
+
+    def test_load_file(self, tmp_path):
+        """tomli.load() 读取文件"""
+        import tomli
+        f = tmp_path / "test.toml"
+        f.write_text('key = "value"', encoding="utf-8")
+        result = tomli.load(f.open("rb"))
+        assert result == {"key": "value"}
 
 
 class TestTopLevelKeys:
