@@ -8,6 +8,16 @@
 - 后来改用 st.integers().map() 生成安全的键名
 - 试过 st.sets() 来保证键不重复，但 hypothesis 的 sets 策略对复杂元素不好控制
 - 最终用 unique_by 参数直接过滤重复键
+
+Modification Record (2026-06-24):
+  - Reviewed: 5 property invariants with total ~550 random samples:
+    1. dict[str,int] for int KVs (100x)
+    2. dict[str,str] for string KVs (100x)
+    3. float type preservation (100x)
+    4. int list parsing (50x)
+    5. crash-free on any text (200x)
+  - Status: No source changes needed
+  - Skill source: test-case-generator, qa-req2testcase-generator
 """
 
 import pytest

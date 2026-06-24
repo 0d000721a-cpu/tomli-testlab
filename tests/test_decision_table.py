@@ -1,4 +1,12 @@
-"""决策表驱动的类型解析测试。"""
+"""决策表驱动的类型解析测试。
+
+Modification Record (2026-06-24):
+  - Reviewed: 14 decision rules (R1-R14) + 1 extra (R15 Decimal)
+    covering all TOML value→Python type mappings;
+    parametrize pattern is clean (only 2 params, no redundancy)
+  - Status: No source changes needed
+  - Skill source: test-case-generator
+"""
 
 from datetime import date, datetime, time
 from decimal import Decimal

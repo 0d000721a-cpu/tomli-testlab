@@ -1,4 +1,13 @@
-"""边界值分析测试 — 数值/日期/字符串边界。"""
+"""边界值分析测试 — 数值/日期/字符串边界。
+
+Modification Record (2026-06-24):
+  - Reviewed: Boundary values for int (64-bit min/max/0/±1),
+    float (0.0/-0.0/subnormal/max), date (epoch/leap/future),
+    time (midnight/end-of-day), string (empty/single/whitespace),
+    array (single/large), table (single/deeply nested)
+  - Status: No source changes needed
+  - Skill source: test-case-generator
+"""
 
 import math
 from datetime import date, datetime, time

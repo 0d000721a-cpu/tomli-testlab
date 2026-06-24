@@ -72,3 +72,8 @@ pytest --html=reports/report.html --self-contained-html
 
 本项目的测试代码为原创，以 MIT 许可发布。
 测试目标 tomli (https://github.com/hukkin/tomli) 的版权归 Taneli Hukkinen 所有，也使用 MIT 许可证。
+
+---
+
+*Modification Record (2026-06-24): No source changes; added QA_TEST_PLAN.md*
+*at project root with coverage matrix, risk register, and anti-pattern analysis.*

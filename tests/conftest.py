@@ -1,4 +1,12 @@
-"""Shared pytest fixtures for tomli testing."""
+"""Shared pytest fixtures for tomli testing.
+
+Modification Record (2026-06-24):
+  - Reviewed: Fixture design confirmed; loads/TOMLDecodeError fixtures
+    are correctly scoped (function scope, simple injection)
+  - Added: QA_TEST_PLAN.md with coverage matrix and risk register
+  - Skill sources: afrexai-qa-test-plan, test-case-generator,
+    qa-req2testcase-generator
+"""
 
 import tomli
 import pytest

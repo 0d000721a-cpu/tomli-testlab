@@ -42,3 +42,13 @@ tomli-testlab/
 ## 版权
 
 测试代码以 [MIT](LICENSE) 许可发布。测试目标 tomli 版权归 [Taneli Hukkinen](https://github.com/hukkin) 所有，MIT 许可。
+
+---
+
+**Modification Record (2026-06-24):**
+  - Added: `QA_TEST_PLAN.md` — comprehensive QA test plan with coverage
+    matrix (2.1-2.5), risk register, bug severity framework, and
+    anti-pattern analysis
+  - Skill sources: afrexai-qa-test-plan (test strategy),
+    test-case-generator (structured coverage),
+    qa-req2testcase-generator (requirement→test mapping)

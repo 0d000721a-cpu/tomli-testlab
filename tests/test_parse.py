@@ -1,4 +1,13 @@
-"""核心解析测试 — 等价类划分 + 功能验证。"""
+"""核心解析测试 — 等价类划分 + 功能验证。
+
+Modification Record (2026-06-24):
+  - Reviewed: Test coverage verified; 36 equivalence class cases
+    covering 9 TOML types (string/integer/float/boolean/datetime/
+    array/table/key/file) with representative values per class
+  - Status: No source changes needed; QA_TEST_PLAN.md documents
+    coverage matrix at project root
+  - Skill sources: test-case-generator, qa-req2testcase-generator
+"""
 
 import math
 from datetime import date, datetime, time

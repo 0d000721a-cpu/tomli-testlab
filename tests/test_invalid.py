@@ -1,4 +1,12 @@
-"""无效 TOML 测试 — 等价类划分。"""
+"""无效 TOML 测试 — 等价类划分。
+
+Modification Record (2026-06-24):
+  - Reviewed: 5 invalid input equivalence classes covered:
+    1. syntax errors, 2. value format errors, 3. structural conflicts,
+    4. encoding issues, 5. edge inputs (empty/whitespace/long)
+  - Status: No source changes needed
+  - Skill source: test-case-generator
+"""
 
 import tomli
 import pytest
